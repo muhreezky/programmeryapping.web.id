@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html x-data="{ isThemeDark: false }" :class="{ 'dark': isThemeDark }" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8" />
 
@@ -19,8 +19,12 @@
         @vite('resources/css/app.css')
     </head>
 
-    <body class="antialiased">
-        {{ $slot }}
+    <body class="antialiased dark:bg-gray-800 bg-primary min-h-screen">
+        @livewire('navbar')
+        <main class="px-5 py-4 space-y-5">
+            {{ $slot }}
+        </main>
+        @livewire('footer')
 
         @filamentScripts
         @vite('resources/js/app.js')
