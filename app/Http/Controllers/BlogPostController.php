@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost as Post;
 use Illuminate\Http\Request;
-use App\Models\BlogPost;
 
 class BlogPostController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $blogs = BlogPost::paginate(20);
+        return view('blog.list-view', [
+            'blogs' => Post::latest()->paginate(20)
+        ]);
     }
 
-    public function show(BlogPost $blogPost)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Post $post)
     {
-        return $blogPost;
+        return view('blog.view-item');
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Auth;
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use IntlDateFormatter;
 use Str;
 
 class BlogPost extends Model
@@ -22,6 +25,10 @@ class BlogPost extends Model
         'title',
         'content',
         'author_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
     ];
 
     /**

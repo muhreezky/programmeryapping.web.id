@@ -2,6 +2,7 @@
 
 namespace App\View\Components\BlogItem;
 
+use App\Models\BlogPost;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -13,14 +14,12 @@ class BlogCard extends Component
      */
     public function __construct(
         public $href,
-        public $title,
-        public $content,
-        public $img,
+        public BlogPost $item,
     )
     {
-        //
+        $this->item->load('author');
     }
-
+    
     /**
      * Get the view / contents that represent the component.
      */
