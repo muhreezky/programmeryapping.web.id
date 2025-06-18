@@ -4,7 +4,8 @@
             Coding yang Diwarnai dengan Omongan Santai
         </h1>
         <p class="text-xl md:text-2xl max-w-3xl mx-auto">
-            Tidak perlu terlalu banyak mengerjakan kode-mu, bergabunglah di sini dan berbagilah tentang apapun yang
+            Tidak perlu terlalu banyak mengerjakan kode-mu, bergabunglah di sini dan berbagilah cerita tentang apapun
+            yang
             Anda alami sehari-hari sebagai programmer
         </p>
     </div>

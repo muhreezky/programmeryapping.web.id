@@ -19,9 +19,9 @@
         @vite('resources/css/app.css')
     </head>
 
-    <body class="antialiased dark:bg-gray-800 bg-primary min-h-screen">
+    <body class="antialiased dark:bg-gray-800 bg-primary min-h-screen flex flex-col">
         @livewire('navbar')
-        <main class="px-5 py-4 space-y-5">
+        <main class="px-5 py-4 space-y-5 flex-1">
             {{ $slot }}
         </main>
         @livewire('footer')

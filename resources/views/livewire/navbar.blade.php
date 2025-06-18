@@ -2,11 +2,7 @@
     @php
         $menus = [
             [
-                'href' => '/',
-                'label' => 'Home',
-            ],
-            [
-                'href' => '/blog-posts',
+                'href' => '/posts',
                 'label' => 'Artikel',
             ],
             [

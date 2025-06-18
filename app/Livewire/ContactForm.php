@@ -25,24 +25,25 @@ class ContactForm extends Component implements HasForms
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->required()
+                    ->required()->label('Nama')
                     ->maxLength(255)
-                    ->placeholder('Your Name'),
+                    ->placeholder('Nama Anda'),
                     
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255)
-                    ->placeholder('Your Email'),
+                    ->placeholder('E-mail aktif Anda'),
                     
                 TextInput::make('subject')
-                    ->required()
+                    ->required()->label('Judul Pesan')
+                    ->columnSpanFull()
                     ->maxLength(255)
-                    ->placeholder('Subject'),
+                    ->placeholder('Tulis Judul Pesan'),
                     
                 Textarea::make('message')
-                    ->required()
-                    ->placeholder('Your Message')
+                    ->required()->label('Pesan')
+                    ->placeholder('Pesan Anda untuk Kami')
                     ->columnSpanFull(),
             ])
             ->statePath('data')

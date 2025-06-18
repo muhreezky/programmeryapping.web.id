@@ -3,10 +3,14 @@
      * @var \App\Livewire\ContactForm $this
      **/
 @endphp
-<section class="p-6 bg-white border dark:bg-gray-800 rounded-lg shadow-lg">
-    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">
-        Get in Touch
-    </h2>
+<x-filament::section class="p-6 rounded-lg shadow-lg">
+    <x-slot name="heading">
+        Hubungi Kami
+    </x-slot>
+    <x-slot name="description">
+        Punya kritik dan saran? Atau ada sesuatu yang ingin Anda sampaikan?
+        Kirimkan kami pesan di sini, jangan sungkan-sungkan
+    </x-slot>
 
     <form wire:submit.prevent="submit" class="space-y-4">
         {{ $this->form }}
@@ -17,4 +21,4 @@
             </x-filament::button>
         </div>
     </form>
-</section>
+</x-filament::section>

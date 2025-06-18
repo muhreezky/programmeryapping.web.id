@@ -9,7 +9,7 @@ class BlogPostController extends Controller
 {
     public function index()
     {
-        return BlogPost::paginate(20);
+        $blogs = BlogPost::paginate(20);
     }
 
     public function show(BlogPost $blogPost)

@@ -12,6 +12,7 @@ class NavbarTest extends TestCase
 {
     public function test_renders_successfully()
     {
+        // Judul harus programmer yapping
         Livewire::test(Navbar::class)
             ->assertStatus(200)
             ->assertSee('Programmer Yapping');
