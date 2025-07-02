@@ -17,6 +17,6 @@
                 />
             @endforeach
         </div>
-        <x-filament::pagination :paginator="$blogs" ::page-options="[10, 20, 25, 50]" />
+        <x-filament::pagination :paginator="$blogs" :page-options="[10, 20, 25, 50]" />
     </x-filament::section>
 </x-layouts.app>

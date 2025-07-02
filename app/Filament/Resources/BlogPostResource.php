@@ -56,6 +56,9 @@ class BlogPostResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->where('author_id', auth()->id());
+            })
             ->filters([
                 //
             ])

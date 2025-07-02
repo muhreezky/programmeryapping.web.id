@@ -22,6 +22,8 @@ class BlogPostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('blog.view-item');
+        return view('blog.view-item', [
+            'blog' => $post
+        ]);
     }
 }
