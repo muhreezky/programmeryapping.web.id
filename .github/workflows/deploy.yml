@@ -47,7 +47,7 @@ jobs:
           # Path file lokal yang akan diupload.
           local-dir: ./
           # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
-          server-dir: ./public_html/api.lsp-tambangminerba.co.id/ # <-- PENTING: Sesuaikan path ini!
+          server-dir: ./domains/programmeryapping.web.id/public_html/ # <-- PENTING: Sesuaikan path ini!
           exclude: |
             **/*
             !deployment.zip
@@ -71,7 +71,7 @@ jobs:
           script: |
             # Pindah ke direktori root aplikasi Laravel Anda di server.
             # Ganti '/home/username/public_html' dengan path absolut yang benar.
-            cd ~/public_html/api.lsp-tambangminerba.co.id # <-- PENTING: Sesuaikan path ini!
+            cd ~/domains/programmeryapping.web.id/public_html/ # <-- PENTING: Sesuaikan path ini!
             
             # Ekstrak konten dari deployment.zip, timpa file yang sudah ada (-o).
             echo "Extracting files from deployment.zip..."
@@ -82,7 +82,7 @@ jobs:
             rm deployment.zip
 
             # Refresh .env
-            # rm .env
+            rm .env
             echo '${{ secrets.PROD_ENV_VARS }}' > .env
             
             # Jalankan 'composer install' untuk production.
