@@ -1,0 +1,106 @@
+name: Deploy Laravel to Shared Hosting
+
+# Pemicu (Trigger)
+# Workflow ini akan berjalan secara otomatis setiap kali ada 'push' baru ke branch 'main'.
+# Anda bisa mengubah 'main' ke branch lain seperti 'master' atau 'production' sesuai kebutuhan.
+on:
+  push:
+    branches:
+      - main
+  pull_request: 
+    branches:
+      - main
+
+# Daftar Pekerjaan (Jobs)
+# Sebuah workflow bisa memiliki satu atau lebih job yang berjalan secara sekuensial atau paralel.
+jobs:
+  deploy:
+    # Nama job, bisa Anda ubah jika perlu.
+    name: Deploy to hosting
+    # Menggunakan runner virtual machine Ubuntu versi terbaru yang disediakan oleh GitHub.
+    runs-on: ubuntu-latest
+
+    # Langkah-langkah (Steps) yang akan dieksekusi secara berurutan.
+    steps:
+      # Langkah 1: Checkout kode dari repositori
+      # Action ini akan mengunduh kode dari branch yang memicu workflow.
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      # Langkah 2: Arsipkan seluruh repositori ke dalam file deployment.zip
+      # Menggunakan command line 'git' untuk membuat arsip.
+      - name: 2. Archive Repository
+        run: git archive -o deployment.zip HEAD
+
+      # Langkah 3: Upload file arsip ke server FTP
+      # Menggunakan action dari marketplace untuk mempermudah proses upload via FTP.
+      # Pastikan Anda sudah mengatur semua 'secrets' yang dibutuhkan.
+      - name: 3. Upload Archive via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          # Alamat server FTP Anda, diambil dari GitHub Secrets.
+          server: ${{ secrets.FTP_SERVER }}
+          # Username akun FTP Anda, diambil dari GitHub Secrets.
+          username: ${{ secrets.FTP_USERNAME }}
+          # Password akun FTP Anda, diambil dari GitHub Secrets.
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Path file lokal yang akan diupload.
+          local-dir: ./
+          # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
+          server-dir: ./public_html/api.lsp-tambangminerba.co.id/ # <-- PENTING: Sesuaikan path ini!
+          exclude: |
+            **/*
+            !deployment.zip
+
+      # Langkah 4: Eksekusi perintah di server melalui SSH
+      # Menjalankan serangkaian perintah untuk mengekstrak, install dependency, dan optimasi.
+      - name: 4. Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # Alamat host untuk koneksi SSH, diambil dari GitHub Secrets.
+          host: ${{ secrets.SSH_HOST }}
+          # Username untuk login SSH, diambil dari GitHub Secrets.
+          username: ${{ secrets.SSH_USERNAME }}
+          # Kunci privat SSH untuk autentikasi, diambil dari GitHub Secrets.
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Port SSH, diambil dari GitHub Secrets. Default adalah 22.
+          port: ${{ secrets.SSH_PORT }}
+          # Passphrase untuk membuka private key
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          # Script yang akan dijalankan di server setelah berhasil terhubung.
+          script: |
+            # Pindah ke direktori root aplikasi Laravel Anda di server.
+            # Ganti '/home/username/public_html' dengan path absolut yang benar.
+            cd ~/public_html/api.lsp-tambangminerba.co.id # <-- PENTING: Sesuaikan path ini!
+            
+            # Ekstrak konten dari deployment.zip, timpa file yang sudah ada (-o).
+            echo "Extracting files from deployment.zip..."
+            unzip -o deployment.zip
+            
+            # Hapus file arsip setelah proses ekstraksi selesai untuk membersihkan.
+            echo "Cleaning up archive file..."
+            rm deployment.zip
+
+            # Refresh .env
+            # rm .env
+            echo '${{ secrets.PROD_ENV_VARS }}' > .env
+            
+            # Jalankan 'composer install' untuk production.
+            # --no-dev: Tidak menginstall package untuk development.
+            # --optimize-autoloader: Mengoptimalkan autoloader untuk performa.
+            echo "Installing Composer dependencies..."
+            composer install
+            
+            # Jalankan perintah Artisan yang dibutuhkan untuk optimasi.
+            echo "Running Artisan commands..."
+            php artisan route:clear
+            php artisan route:cache
+            php artisan view:clear
+            php artisan view:cache
+            php artisan filament:optimize-clear
+            php artisan filament:optimize
+            php artisan icons:clear
+            php artisan icons:cache
+            
+            echo "🚀 Deployment finished successfully!"
+            exit;
