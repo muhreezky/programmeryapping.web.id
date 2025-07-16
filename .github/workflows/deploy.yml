@@ -91,6 +91,7 @@ jobs:
             # --optimize-autoloader: Mengoptimalkan autoloader untuk performa.
             echo "Installing Composer dependencies..."
             composer install
+            npm install
             npm run build
             
             # Jalankan perintah Artisan yang dibutuhkan untuk optimasi.
