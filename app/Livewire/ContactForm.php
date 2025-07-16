@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Message;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -13,7 +14,7 @@ class ContactForm extends Component implements HasForms
 {
     use InteractsWithForms;
 
-    public ?array $data = [];
+    public array $data = [];
 
     public function mount(): void
     {
@@ -24,13 +25,13 @@ class ContactForm extends Component implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('sender_name')
                     ->required()->label('Nama')
                     ->maxLength(255)
                     ->placeholder('Nama Anda'),
                     
-                TextInput::make('email')
-                    ->email()
+                TextInput::make('sender_email')
+                    ->email()->label('E-mail')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('E-mail aktif Anda'),
@@ -41,13 +42,21 @@ class ContactForm extends Component implements HasForms
                     ->maxLength(255)
                     ->placeholder('Tulis Judul Pesan'),
                     
-                Textarea::make('message')
+                Textarea::make('content')
                     ->required()->label('Pesan')
                     ->placeholder('Pesan Anda untuk Kami')
                     ->columnSpanFull(),
             ])
+            ->model(Message::class)
             ->statePath('data')
             ->columns(2);
+    }
+
+    public function submit()
+    {
+        $msg = Message::create($this->form->getState());
+        $this->form->model($msg)->saveRelationships();
+        $this->form->fill();
     }
 
     public function render()
