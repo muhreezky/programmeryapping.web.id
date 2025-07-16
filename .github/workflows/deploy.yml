@@ -24,18 +24,18 @@ jobs:
     steps:
       # Langkah 1: Checkout kode dari repositori
       # Action ini akan mengunduh kode dari branch yang memicu workflow.
-      - name: 1. Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       # Langkah 2: Arsipkan seluruh repositori ke dalam file deployment.zip
       # Menggunakan command line 'git' untuk membuat arsip.
-      - name: 2. Archive Repository
+      - name: Archive Repository
         run: git archive -o deployment.zip HEAD
 
       # Langkah 3: Upload file arsip ke server FTP
       # Menggunakan action dari marketplace untuk mempermudah proses upload via FTP.
       # Pastikan Anda sudah mengatur semua 'secrets' yang dibutuhkan.
-      - name: 3. Upload Archive via FTP
+      - name: Upload Archive via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           # Alamat server FTP Anda, diambil dari GitHub Secrets.
@@ -54,7 +54,7 @@ jobs:
 
       # Langkah 4: Eksekusi perintah di server melalui SSH
       # Menjalankan serangkaian perintah untuk mengekstrak, install dependency, dan optimasi.
-      - name: 4. Deploy via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           # Alamat host untuk koneksi SSH, diambil dari GitHub Secrets.
@@ -71,6 +71,7 @@ jobs:
           script: |
             # Pindah ke direktori root aplikasi Laravel Anda di server.
             # Ganti '/home/username/public_html' dengan path absolut yang benar.
+            source ~/nodevenv/domains/programmeryapping.web.id/public_html/20/bin/activate
             cd ~/domains/programmeryapping.web.id/public_html/ # <-- PENTING: Sesuaikan path ini!
             
             # Ekstrak konten dari deployment.zip, timpa file yang sudah ada (-o).
@@ -90,6 +91,7 @@ jobs:
             # --optimize-autoloader: Mengoptimalkan autoloader untuk performa.
             echo "Installing Composer dependencies..."
             composer install
+            npm run build
             
             # Jalankan perintah Artisan yang dibutuhkan untuk optimasi.
             echo "Running Artisan commands..."
