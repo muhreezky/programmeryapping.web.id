@@ -66,6 +66,7 @@ class MessageResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
 
@@ -86,10 +87,10 @@ class MessageResource extends Resource
         return false;
     }
 
-    public static function canDelete(Model $record): bool
-    {
-        return false;
-    }
+    // public static function canDelete(Model $record): bool
+    // {
+    //     return false;
+    // }
 
     public static function getPages(): array
     {
