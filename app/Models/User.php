@@ -47,9 +47,9 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    protected function posts() 
+    public function posts()
     {
-        return $this->hasMany(BlogPost::class, 'author_id');
+        return $this->hasMany(Post::class, 'author_id');
     }
 
     public function canAccessPanel(\Filament\Panel $panel): bool
