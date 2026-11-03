@@ -20,4 +20,9 @@ export default defineConfig({
         }),
         svelte(),
     ],
+    resolve: {
+        alias: {
+            '$lib': 'resources/js',
+        },
+    },
 })
