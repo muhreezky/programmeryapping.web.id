@@ -84,7 +84,7 @@
             <button
                 type="submit"
                 disabled={form.processing}
-                class="rounded-lg bg-amber-500 px-5 py-2.5 font-semibold text-white shadow transition hover:bg-amber-600 disabled:opacity-60"
+                class="rounded-lg bg-amber-500 px-5 py-2.5 font-semibold text-white shadow transition:hover:bg-amber-600 disabled:opacity-60"
             >
                 {form.processing ? 'Mengirim...' : 'Kirim Pesan'}
             </button>

@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noEmit": true,
+        "allowJs": true,
+        "checkJs": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "types": [],
+        "paths": {
+            "$lib/*": ["./resources/js/*"],
+            "$lib/components/*": ["./resources/js/components/*"],
+            "$lib/components/ui/*": ["./resources/js/components/ui/*"],
+            "$lib/utils/*": ["./resources/js/lib/utils/*"],
+            "$lib/hooks/*": ["./resources/js/hooks/*"]
+        }
+    },
+    "include": ["resources/js/**/*.svelte", "resources/js/**/*.ts", "vite.config.js"],
+    "exclude": ["node_modules"]
+}

@@ -45,13 +45,13 @@
                             ? 'bg-amber-500 text-white'
                             : 'bg-white dark:bg-gray-800'}"
                     >
-                        {link.label.replace('&laquo;', '«').replace('&raquo;', '»')}
+                        {link.label.replace('&laquo;', '«').replace('&raquo', '»')}
                     </a>
                 {:else}
                     <span
                         class="rounded-lg border border-amber-200 bg-white px-3 py-1.5 text-sm opacity-40 dark:border-gray-600 dark:bg-gray-800"
                     >
-                        {link.label.replace('&laquo;', '«').replace('&raquo;', '»')}
+                        {link.label.replace('&laquo;', '«').replace('&raquo', '»')}
                     </span>
                 {/if}
             {/each}

@@ -148,7 +148,7 @@
                 <a
                     href={'/posts/' + post.slug}
                     use:inertia
-                    class="block rounded-xl bg-white p-5 shadow-md transition hover:shadow-lg dark:bg-gray-800"
+                    class="block rounded-xl bg-white p-5 shadow-md transition:hover:shadow-lg dark:bg-gray-800"
                 >
                     <h3 class="font-bold">{post.title}</h3>
                     <p class="mt-1 text-sm opacity-60">
