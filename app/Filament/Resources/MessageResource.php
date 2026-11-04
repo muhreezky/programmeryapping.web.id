@@ -3,25 +3,25 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MessageResource\Pages;
-use App\Filament\Resources\MessageResource\RelationManagers;
 use App\Models\Message;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use BackedEnum;
 
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
     protected static ?string $modelLabel = 'Message';
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

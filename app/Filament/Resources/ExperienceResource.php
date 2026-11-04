@@ -5,22 +5,26 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ExperienceResource\Pages;
 use App\Models\Experience;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use BackedEnum;
+use UnitEnum;
 
 class ExperienceResource extends Resource
 {
     protected static ?string $model = Experience::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?string $navigationGroup = 'Portofolio';
+    protected static UnitEnum|string|null $navigationGroup = 'Portofolio';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -43,11 +47,11 @@ class ExperienceResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('ended_at')
                     ->label('Selesai')
-                    ->hidden(fn (Forms\Get $get) => (bool) $get('is_current')),
+                    ->hidden(fn (Get $get) => (bool) $get('is_current')),
                 Forms\Components\Toggle::make('is_current')
                     ->label('Masih Bekerja di Sini')
                     ->live()
-                    ->afterStateUpdated(function (Forms\Set $set, $state) {
+                    ->afterStateUpdated(function (Set $set, $state) {
                         if ($state) {
                             $set('ended_at', null);
                         }

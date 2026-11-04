@@ -5,20 +5,22 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use BackedEnum;
+use UnitEnum;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-rocket-launch';
 
-    protected static ?string $navigationGroup = 'Portofolio';
+    protected static UnitEnum|string|null $navigationGroup = 'Portofolio';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

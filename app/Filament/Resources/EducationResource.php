@@ -5,20 +5,26 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EducationResource\Pages;
 use App\Models\Education;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
+use Filament\Actions;
+use Filament\Schemas\Schema;
+use BackedEnum;
+use UnitEnum;
 
 class EducationResource extends Resource
 {
     protected static ?string $model = Education::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static ?string $navigationGroup = 'Portofolio';
+    protected static UnitEnum|string|null $navigationGroup = 'Portofolio';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -41,11 +47,11 @@ class EducationResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('ended_at')
                     ->label('Selesai')
-                    ->hidden(fn (Forms\Get $get) => (bool) $get('is_current')),
+                    ->hidden(fn(Get $get) => (bool) $get('is_current')),
                 Forms\Components\Toggle::make('is_current')
                     ->label('Sedang Bersekolah di Sini')
                     ->live()
-                    ->afterStateUpdated(function (Forms\Set $set, $state) {
+                    ->afterStateUpdated(function (Set $set, $state) {
                         if ($state) {
                             $set('ended_at', null);
                         }
@@ -88,12 +94,12 @@ class EducationResource extends Resource
             ])
             ->defaultSort('sort_order')
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
