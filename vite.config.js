@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
-import laravel, { refreshPaths } from 'laravel-vite-plugin'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import laravel from 'laravel-vite-plugin'
 
 export default defineConfig({
     plugins: [
@@ -8,7 +7,6 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             ssr: 'resources/js/ssr.js',
             refresh: [
-                ...refreshPaths,
                 'app/Filament/**',
                 'app/Forms/Components/**',
                 'app/Livewire/**',
@@ -18,7 +16,6 @@ export default defineConfig({
                 'app/Http/Controllers/**',
             ],
         }),
-        svelte(),
     ],
     resolve: {
         alias: {
