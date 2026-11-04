@@ -27,7 +27,7 @@ class Post extends Model
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            fn ($value) => date('D M Y H:i:s T', strtotime($value))
+            fn ($value) => \Illuminate\Support\Carbon::parse($value)
         );
     }
 
