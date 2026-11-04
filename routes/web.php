@@ -11,10 +11,10 @@ Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.s
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/login', function () {
-    return redirect('/admin/login');
+  return redirect('/admin');
 });
 
-Route::get('/storage/{fileName}', function(Request $request, string $fileName) {
+Route::get('/storage/{fileName}', function (Request $request, string $fileName) {
   try {
     if (str_contains($fileName, '.php')) {
       throw new Error('Not Found');
