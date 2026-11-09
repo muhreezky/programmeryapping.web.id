@@ -97,7 +97,7 @@ jobs:
             # --no-dev: Tidak menginstall package untuk development.
             # --optimize-autoloader: Mengoptimalkan autoloader untuk performa.
             echo "Installing Composer dependencies..."
-            composer install && npm install && npm run build
+            composer install
             
             # Jalankan perintah Artisan yang dibutuhkan untuk optimasi.
             echo "Running Artisan commands..."
@@ -109,7 +109,8 @@ jobs:
             php artisan filament:optimize
             php artisan icons:clear
             php artisan icons:cache
-
+            
+            npm install && npm run build
             echo "Deployment finished successfully!"
             exit;
 
