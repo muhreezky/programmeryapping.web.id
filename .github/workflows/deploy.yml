@@ -47,7 +47,7 @@ jobs:
           # Path file lokal yang akan diupload.
           local-dir: ./
           # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
-          server-dir: ./domains/programmeryapping.web.id/public_html/ # <-- PENTING: Sesuaikan path ini!
+          server-dir: ./domains/muhrizki.my.id/public_html/ # <-- PENTING: Sesuaikan path ini!
           exclude: |
             **/*
             !deployment.zip
@@ -84,7 +84,7 @@ jobs:
 
             # Refresh .env
             rm .env
-            echo '${{ secrets.PROD_ENV_VARS }}' > .env
+            echo '${{ secrets.PROD_ENV_BASE64 }}' | base64 -d > .env
             
             # Jalankan 'composer install' untuk production.
             # --no-dev: Tidak menginstall package untuk development.
@@ -105,5 +105,5 @@ jobs:
             php artisan icons:clear
             php artisan icons:cache
             
-            echo "🚀 Deployment finished successfully!"
+            echo "Deployment finished successfully!"
             exit;
