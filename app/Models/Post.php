@@ -21,6 +21,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
+        'headline_image',
         'author_id',
     ];
 
@@ -46,7 +47,7 @@ class Post extends Model
                 $model->author()->associate(Auth::id());
             }
 
-            $model->slug = Str::slug($model->title . '-' . Str::random(7));
+            $model->slug = Str::slug($model->title.'-'.Str::random(7));
         });
     }
 }

@@ -65,7 +65,7 @@
                 <a href="{{ route('home') }}#kontak"
                     class="text-neutral-600 hover:text-amber-600 transition-colors dark:text-neutral-400 dark:hover:text-amber-400">Kontak</a>
 
-                @if(auth()->user()?->canAccessPanel(app('filament.panel')))
+                @if(auth()->check())
                     <a href="{{ url('/admin') }}"
                         class="text-neutral-600 hover:text-amber-600 transition-colors dark:text-neutral-400 dark:hover:text-amber-400">Admin</a>
                 @endif

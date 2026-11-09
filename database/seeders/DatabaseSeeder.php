@@ -4,10 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,7 +39,7 @@ class DatabaseSeeder extends Seeder
         $textWidth = abs($textBox[2] - $textBox[0]);
         imagettftext($image, $fontSize, 0, (int) (($width - $textWidth) / 2), (int) ($height / 2 + 20), $white, $this->fontPath(), $text);
 
-        $relativePath = 'images/' . \Illuminate\Support\Str::slug($text) . '-' . uniqid() . '.png';
+        $relativePath = 'images/'.Str::slug($text).'-'.uniqid().'.png';
         $fullPath = \Illuminate\Support\Facades\Storage::disk('public')->path($relativePath);
         @mkdir(dirname($fullPath), 0775, true);
         imagepng($image, $fullPath);
@@ -53,7 +55,7 @@ class DatabaseSeeder extends Seeder
             return $font;
         }
 
-        return __DIR__ . '/../../node_modules/@fontsource/roboto/files/roboto-latin-700-normal.woff';
+        return __DIR__.'/../../node_modules/@fontsource/roboto/files/roboto-latin-700-normal.woff';
     }
 
     /**
@@ -61,75 +63,98 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::factory()->create([
-            'name' => 'Muhammad Rizkiansyah',
-            'email' => 'admin@muhrizki.my.id',
-            'email_verified_at' => now(),
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@muhrizki.my.id'],
+            [
+                'name' => 'Muhammad Rizkiansyah',
+                'email_verified_at' => now(),
+                'password' => 'password',
+            ],
+        );
 
         $this->command?->info('Admin login -> email: admin@muhrizki.my.id / password: password');
 
-        Experience::factory()->create([
-            'title' => 'Lead Backend Developer',
-            'company' => 'PT Solusi Digital Kreatif',
-            'employment_type' => 'Full-time',
-            'description' => 'Memimpin tim backend dalam membangun layanan API untuk aplikasi e-commerce dengan ratusan ribu pengguna. Fokus pada arsitektur Laravel, scaling database, dan reliability tagihan payment gateway.',
-            'started_at' => now()->subYears(3),
-            'is_current' => true,
-            'ended_at' => null,
-            'sort_order' => 0,
-        ]);
+        $experiences = [
+            [
+                'title' => 'Lead Backend Developer',
+                'company' => 'PT Solusi Digital Kreatif',
+                'employment_type' => 'Full-time',
+                'description' => 'Memimpin tim backend dalam membangun layanan API untuk aplikasi e-commerce dengan ratusan ribu pengguna. Fokus pada arsitektur Laravel, scaling database, dan reliability tagihan payment gateway.',
+                'started_at' => now()->subYears(3),
+                'is_current' => true,
+                'ended_at' => null,
+                'sort_order' => 0,
+            ],
+            [
+                'title' => 'Backend Developer',
+                'company' => 'Startup Ceprasindo',
+                'employment_type' => 'Full-time',
+                'description' => 'Membangun REST API dan modul integrasi pihak ketiga (payment, shipping, notifikasi) untuk platform tiket event menggunakan Laravel dan MySQL.',
+                'started_at' => now()->subYears(5)->subDays(100),
+                'ended_at' => now()->subYears(3),
+                'is_current' => false,
+                'sort_order' => 1,
+            ],
+            [
+                'title' => 'Junior Web Developer',
+                'company' => 'CV Web Kreatif Bersama',
+                'employment_type' => 'Internship',
+                'description' => 'Memulai karier dengan mengembangkan website company profile dan CMS kecil-kecilan. Belajar menulis kode yang rapi dan berguna bagi klien yang tidak terlalu banyak mengerjakan kode sendiri.',
+                'started_at' => now()->subYears(6),
+                'ended_at' => now()->subYears(5)->subDays(200),
+                'is_current' => false,
+                'sort_order' => 2,
+            ],
+        ];
 
-        Experience::factory()->create([
-            'title' => 'Backend Developer',
-            'company' => 'Startup Ceprasindo',
-            'employment_type' => 'Full-time',
-            'description' => 'Membangun REST API dan modul integrasi pihak ketiga (payment, shipping, notifikasi) untuk platform tiket event menggunakan Laravel dan MySQL.',
-            'started_at' => now()->subYears(5)->subDays(100),
-            'ended_at' => now()->subYears(3),
-            'is_current' => false,
-            'sort_order' => 1,
-        ]);
+        foreach ($experiences as $experience) {
+            Experience::updateOrCreate(
+                [
+                    'title' => $experience['title'],
+                    'company' => $experience['company'],
+                ],
+                $experience,
+            );
+        }
 
-        Experience::factory()->create([
-            'title' => 'Junior Web Developer',
-            'company' => 'CV Web Kreatif Bersama',
-            'employment_type' => 'Internship',
-            'description' => 'Memulai karier dengan mengembangkan website company profile dan CMS kecil-kecilan. Belajar menulis kode yang rapi dan berguna bagi klien yang tidak terlalu banyak mengerjakan kode sendiri.',
-            'started_at' => now()->subYears(6),
-            'ended_at' => now()->subYears(5)->subDays(200),
-            'is_current' => false,
-            'sort_order' => 2,
-        ]);
+        $educations = [
+            [
+                'institution' => 'Universitas Negeri Jakarta',
+                'degree' => 'Sarjana Ilmu Komputer (S.Kom.)',
+                'field_of_study' => 'Ilmu Komputer',
+                'description' => 'Fokus pada pemrograman web dan rekayasa perangkat lunak. Tugas akhir mengusulkan optimasi query database untuk aplikasi berbasis Laravel.',
+                'started_at' => now()->subYears(9),
+                'ended_at' => now()->subYears(5),
+                'is_current' => false,
+                'sort_order' => 0,
+            ],
+            [
+                'institution' => 'SMK Negeri 13 Jakarta',
+                'degree' => 'Jurusan Rekayasa Perangkat Lunak',
+                'field_of_study' => 'Rekayasa Perangkat Lunak',
+                'description' => 'Mulai berkenalan dengan dunia web programming, dari HTML, CSS, PHP hingga membangun aplikasi desktop sederhana.',
+                'started_at' => now()->subYears(12),
+                'ended_at' => now()->subYears(9),
+                'is_current' => false,
+                'sort_order' => 1,
+            ],
+        ];
 
-        Education::factory()->create([
-            'institution' => 'Universitas Negeri Jakarta',
-            'degree' => 'Sarjana Ilmu Komputer (S.Kom.)',
-            'field_of_study' => 'Ilmu Komputer',
-            'description' => 'Fokus pada pemrograman web dan rekayasa perangkat lunak. Tugas akhir mengusulkan optimasi query database untuk aplikasi berbasis Laravel.',
-            'started_at' => now()->subYears(9),
-            'ended_at' => now()->subYears(5),
-            'is_current' => false,
-            'sort_order' => 0,
-        ]);
-
-        Education::factory()->create([
-            'institution' => 'SMK Negeri 13 Jakarta',
-            'degree' => 'Jurusan Rekayasa Perangkat Lunak',
-            'field_of_study' => 'Rekayasa Perangkat Lunak',
-            'description' => 'Mulai berkenalan dengan dunia web programming, dari HTML, CSS, PHP hingga membangun aplikasi desktop sederhana.',
-            'started_at' => now()->subYears(12),
-            'ended_at' => now()->subYears(9),
-            'is_current' => false,
-            'sort_order' => 1,
-        ]);
+        foreach ($educations as $education) {
+            Education::updateOrCreate(
+                [
+                    'institution' => $education['institution'],
+                    'degree' => $education['degree'],
+                ],
+                $education,
+            );
+        }
 
         $projectData = [
             [
                 'title' => 'muhrizki.my.id',
                 'description' => 'Portofolio pribadi dan blog ini sendiri — dibangun dengan Laravel 12, Filament untuk admin panel, serta Inertia.js + Svelte SSR di sisi frontend. Diharuskan hosting dedicated? Tidak, shared hosting pun sanggup dengan SSR.',
                 'url' => 'https://muhrizki.my.id',
-                'image' => $this->makePlaceholderImage('muhrizki.my.id', 0),
                 'tags' => ['Laravel', 'Filament', 'Svelte', 'Inertia', 'SSR'],
                 'featured' => true,
                 'sort_order' => 0,
@@ -138,7 +163,6 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Tiket Event Cepras',
                 'description' => 'Platform penjualan tiket event online dengan integrasi payment gateway dan QR check-in di gerbang.',
                 'url' => 'https://example.com',
-                'image' => $this->makePlaceholderImage('Tiket Event Cepras', 1),
                 'tags' => ['Laravel', 'MySQL', 'Redis', 'QR Code'],
                 'featured' => true,
                 'sort_order' => 1,
@@ -147,7 +171,6 @@ class DatabaseSeeder extends Seeder
                 'title' => 'API Katalog Buku',
                 'description' => 'REST API katalog perpustakaan dengan dokumentasi OpenAPI, rate-limiting, dan cache per-request yang ringan.',
                 'url' => 'https://github.com/rizki/katalog-buku',
-                'image' => $this->makePlaceholderImage('API Katalog Buku', 0),
                 'tags' => ['Laravel', 'PostgreSQL', 'OpenAPI'],
                 'featured' => false,
                 'sort_order' => 2,
@@ -156,7 +179,6 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Dashboard Monitoring IoT',
                 'description' => 'Dashboard realtime untuk memantau sensor suhu dan kelembaban gudang menggunakan WebSocket.',
                 'url' => 'https://example.org',
-                'image' => $this->makePlaceholderImage('Dashboard Monitoring IoT', 1),
                 'tags' => ['Node.js', 'Socket.IO', 'Vue'],
                 'featured' => false,
                 'sort_order' => 3,
@@ -164,7 +186,16 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($projectData as $project) {
-            Project::factory()->create($project);
+            $existingProject = Project::query()->firstWhere('title', $project['title']);
+
+            Project::updateOrCreate(
+                ['title' => $project['title']],
+                [
+                    ...$project,
+                    'image' => $existingProject?->image
+                        ?: $this->makePlaceholderImage($project['title'], $project['sort_order']),
+                ],
+            );
         }
 
         $postData = [
@@ -183,11 +214,21 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($postData as $index => $post) {
-            Post::factory()->create([
-                ...$post,
-                'headline_image' => $this->makePlaceholderImage(\Illuminate\Support\Str::limit($post['title'], 30), $index),
-                'author_id' => $admin->id,
-            ]);
+            $existingPost = Post::query()->firstWhere('title', $post['title']);
+
+            Post::updateOrCreate(
+                ['title' => $post['title']],
+                [
+                    ...$post,
+                    'headline_image' => $existingPost?->headline_image
+                        ?: $this->makePlaceholderImage(Str::limit($post['title'], 30), $index),
+                    'author_id' => $admin->id,
+                ],
+            );
+        }
+
+        if (Message::query()->count() === 0) {
+            Message::factory()->count(8)->create();
         }
     }
 }
