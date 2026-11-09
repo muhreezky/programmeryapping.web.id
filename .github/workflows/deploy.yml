@@ -47,7 +47,7 @@ jobs:
           # Path file lokal yang akan diupload.
           local-dir: ./
           # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
-          server-dir: ./domains/muhrizki.my.id/public_html/ # <-- PENTING: Sesuaikan path ini!
+          server-dir: ./public_html/ # <-- PENTING: Sesuaikan path ini!
           exclude: |
             **/*
             !deployment.zip
