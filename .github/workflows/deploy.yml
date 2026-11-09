@@ -32,6 +32,7 @@ jobs:
       - name: Archive Repository
         run: |
           rm -f deployment.zip
+          rm -f .ftp-deploy-sync-state.json
           git archive -o deployment.zip HEAD
 
       # Langkah 3: Upload file arsip ke server FTP
@@ -51,10 +52,14 @@ jobs:
           # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
           server-dir: ./public_html/ # <-- PENTING: Sesuaikan path ini!
           # Pastikan file deployment.zip menimpa file yang ada di server
-          dangerous-clean-slate: false
+          # dangerous-clean-slate: true will force overwrite by deleting remote files not in local source
+          # But we use state file tracking instead - see note below
           exclude: |
             **/*
-            !deployment.zip      # Langkah 4: Eksekusi perintah di server melalui SSH
+            !deployment.zip
+          dangerous-clean-slate: false
+
+      # Langkah 4: Eksekusi perintah di server melalui SSH
       # Menjalankan serangkaian perintah untuk mengekstrak, install dependency, dan optimasi.
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
