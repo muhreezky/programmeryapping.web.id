@@ -50,9 +50,7 @@ jobs:
           server-dir: ./public_html/ # <-- PENTING: Sesuaikan path ini!
           exclude: |
             **/*
-            !deployment.zip
-
-      # Langkah 4: Eksekusi perintah di server melalui SSH
+            !deployment.zip      # Langkah 4: Eksekusi perintah di server melalui SSH
       # Menjalankan serangkaian perintah untuk mengekstrak, install dependency, dan optimasi.
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -80,10 +78,10 @@ jobs:
             
             # Hapus file arsip setelah proses ekstraksi selesai untuk membersihkan.
             echo "Cleaning up archive file..."
-            rm deployment.zip
+            rm -f deployment.zip
 
             # Refresh .env
-            rm .env
+            rm -f .env
             echo '${{ secrets.PROD_ENV_BASE64 }}' | base64 -d > .env
             
             # Jalankan 'composer install' untuk production.
@@ -104,6 +102,11 @@ jobs:
             php artisan filament:optimize
             php artisan icons:clear
             php artisan icons:cache
-            
+
             echo "Deployment finished successfully!"
             exit;
+
+      # Langkah 5: Hapus file deployment.zip lokal yang dibuat oleh step Archive Repository
+      - name: Remove local deployment archive
+        run: rm -f deployment.zip
+        continue-on-error: false
