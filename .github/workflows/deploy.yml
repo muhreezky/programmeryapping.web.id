@@ -71,8 +71,8 @@ jobs:
           script: |
             # Pindah ke direktori root aplikasi Laravel Anda di server.
             # Ganti '/home/username/public_html' dengan path absolut yang benar.
-            source ~/nodevenv/domains/programmeryapping.web.id/public_html/20/bin/activate
-            cd ~/domains/programmeryapping.web.id/public_html/ # <-- PENTING: Sesuaikan path ini!
+            source ~/nodevenv/domains/${{ secrets.PROD_DOMAIN }}/public_html/${{ secrets.NODE_VERSION }}/bin/activate
+            cd ~/domains/${{ secrets.PROD_DOMAIN }}/public_html/ # <-- PENTING: Sesuaikan path ini!
             
             # Ekstrak konten dari deployment.zip, timpa file yang sudah ada (-o).
             echo "Extracting files from deployment.zip..."
