@@ -30,7 +30,9 @@ jobs:
       # Langkah 2: Arsipkan seluruh repositori ke dalam file deployment.zip
       # Menggunakan command line 'git' untuk membuat arsip.
       - name: Archive Repository
-        run: git archive -o deployment.zip HEAD
+        run: |
+          rm -f deployment.zip
+          git archive -o deployment.zip HEAD
 
       # Langkah 3: Upload file arsip ke server FTP
       # Menggunakan action dari marketplace untuk mempermudah proses upload via FTP.
