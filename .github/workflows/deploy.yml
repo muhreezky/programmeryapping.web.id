@@ -101,6 +101,7 @@ jobs:
             
             # Jalankan perintah Artisan yang dibutuhkan untuk optimasi.
             echo "Running Artisan commands..."
+            php artisan filament:install --no-interaction
             php artisan route:clear
             php artisan route:cache
             php artisan view:clear
