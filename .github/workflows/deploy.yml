@@ -7,9 +7,9 @@ on:
   push:
     branches:
       - main
-  pull_request: 
-    branches:
-      - main
+  # pull_request: 
+  #   branches:
+  #     - main
 
 # Daftar Pekerjaan (Jobs)
 # Sebuah workflow bisa memiliki satu atau lebih job yang berjalan secara sekuensial atau paralel.
