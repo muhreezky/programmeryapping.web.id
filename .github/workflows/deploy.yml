@@ -48,6 +48,8 @@ jobs:
           local-dir: ./
           # Path tujuan di server. Ganti '/public_html/deployment.zip' sesuai dengan direktori root aplikasi Anda.
           server-dir: ./public_html/ # <-- PENTING: Sesuaikan path ini!
+          # Pastikan file deployment.zip menimpa file yang ada di server
+          dangerous-clean-slate: false
           exclude: |
             **/*
             !deployment.zip      # Langkah 4: Eksekusi perintah di server melalui SSH
