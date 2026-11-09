@@ -25,7 +25,7 @@ jobs:
       # Langkah 1: Checkout kode dari repositori
       # Action ini akan mengunduh kode dari branch yang memicu workflow.
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Langkah 2: Arsipkan seluruh repositori ke dalam file deployment.zip
       # Menggunakan command line 'git' untuk membuat arsip.
