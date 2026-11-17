@@ -16,11 +16,11 @@
                 wire:navigate>
                 Beranda
             </a>
-            <a href="{{ route('home') }}#proyek"
+            <a href="#proyek"
                 class="text-sm font-medium px-3 py-2 rounded-field transition-colors text-neutral-700 hover:bg-amber-500/10 hover:text-amber-700 dark:text-neutral-300 dark:hover:text-amber-400">
                 Karya
             </a>
-            <a href="{{ route('home') }}#pengalaman"
+            <a href="#pengalaman"
                 class="text-sm font-medium px-3 py-2 rounded-field transition-colors text-neutral-700 hover:bg-amber-500/10 hover:text-amber-700 dark:text-neutral-300 dark:hover:text-amber-400">
                 Pengalaman
             </a>
@@ -30,7 +30,7 @@
                 Artikel
             </a>
 
-            <a href="{{ route('home') }}#kontak">
+            <a href="#kontak">
                 <x-ui.button size="sm" variant="primary" as="a" icon-after="envelope" wire:navigate>
                     Hubungi
                 </x-ui.button>
@@ -82,11 +82,11 @@
                 class="px-4 py-3 rounded-field text-neutral-800 font-medium hover:bg-amber-500/10 hover:text-amber-700 transition-colors dark:text-neutral-100 dark:hover:text-amber-400">
                 Beranda
             </a>
-            <a href="{{ route('home') }}#proyek" wire:click="toggleMenu"
+            <a href="#proyek" wire:click="toggleMenu"
                 class="px-4 py-3 rounded-field text-neutral-800 font-medium hover:bg-amber-500/10 hover:text-amber-700 transition-colors dark:text-neutral-100 dark:hover:text-amber-400">
                 Karya
             </a>
-            <a href="{{ route('home') }}#pengalaman" wire:click="toggleMenu"
+            <a href="#pengalaman" wire:click="toggleMenu"
                 class="px-4 py-3 rounded-field text-neutral-800 font-medium hover:bg-amber-500/10 hover:text-amber-700 transition-colors dark:text-neutral-100 dark:hover:text-amber-400">
                 Pengalaman
             </a>
@@ -94,7 +94,7 @@
                 class="px-4 py-3 rounded-field text-neutral-800 font-medium hover:bg-amber-500/10 hover:text-amber-700 transition-colors dark:text-neutral-100 dark:hover:text-amber-400">
                 Artikel
             </a>
-            <a href="{{ route('home') }}#kontak" wire:click="toggleMenu"
+            <a href="#kontak" wire:click="toggleMenu"
                 class="px-4 py-3 rounded-field text-neutral-800 font-medium hover:bg-amber-500/10 hover:text-amber-700 transition-colors dark:text-neutral-100 dark:hover:text-amber-400">
                 Kontak
             </a>
