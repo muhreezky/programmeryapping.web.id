@@ -29,10 +29,6 @@
 
         <div class="relative mx-auto flex max-w-5xl flex-col-reverse items-start gap-10 px-4 pb-16 pt-16 md:flex-row md:items-center md:px-6 md:pt-24">
             <div class="max-w-2xl space-y-5">
-                <x-ui.badge variant="outline" color="amber" icon="sparkles" size="sm">
-                    Tersedia untuk proyek baru
-                </x-ui.badge>
-
                 <div data-slot="hero-title">
                     <x-ui.heading level="h1" size="2xl" class="tracking-tight">
                         Muhammad <span class="text-amber-600 dark:text-amber-400">Rizkiansyah</span>
