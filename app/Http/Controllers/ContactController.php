@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
+use App\Http\Requests\StoreMessageRequest;
+use App\Services\MessageService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function __construct(
+        protected MessageService $messageService
+    ) {}
+
     /**
      * Store a visitor message.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreMessageRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'sender_name' => 'required|string|max:255',
-            'sender_email' => 'required|string|email|max:255',
-            'subject' => 'required|string|max:255',
-            'content' => 'required|string',
-        ]);
-
-        Message::create($validated);
+        $this->messageService->createFromContactForm($request->validated());
 
         return back()->with('success', 'Pesan terkirim, terima kasih sudah menghubungi saya!');
     }

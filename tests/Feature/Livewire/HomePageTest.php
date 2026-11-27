@@ -3,6 +3,7 @@
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\ContactForm;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -13,10 +14,13 @@ class HomePageTest extends TestCase
 
     public function test_renders_successfully()
     {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
         $this->get('/')
             ->assertStatus(200)
             ->assertSee('Muhammad Rizkiansyah')
-            ->assertSeeLivewire('posts');
+            ->assertSeeLivewire('navbar');
     }
 
     public function test_shows_message_form()

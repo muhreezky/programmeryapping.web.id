@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -23,6 +24,9 @@ class ResourcePagesTest extends TestCase
 
         $this->admin = User::factory()->create();
         $this->actingAs($this->admin);
+
+        // Set the current Filament panel
+        Filament::setCurrentPanel('admin');
     }
 
     public function test_dashboard_renders(): void
@@ -58,6 +62,9 @@ class ResourcePagesTest extends TestCase
 
         foreach ($routes as $route => $text) {
             $response = $this->get($route);
+            if ($response->status() !== 200) {
+                dump($route, $response->status(), $response->getContent());
+            }
             $this->assertSame(200, $response->status(), "GET {$route} failed");
             $response->assertSee($text);
         }
@@ -74,6 +81,9 @@ class ResourcePagesTest extends TestCase
 
         foreach ($routes as $route => $label) {
             $response = $this->get($route);
+            if ($response->status() !== 200) {
+                dump($route, $response->status(), $response->getContent());
+            }
             $this->assertSame(200, $response->status(), "GET {$route} failed");
             $response->assertSee($label);
         }
@@ -88,8 +98,15 @@ class ResourcePagesTest extends TestCase
             'author_id' => $this->admin->getKey(),
         ]);
 
+        // Verify the post was created correctly
+        $this->assertDatabaseHas('posts', [
+            'id' => $post->getKey(),
+            'author_id' => $this->admin->getKey(),
+        ]);
+
+        // Post uses slug as route key, so we need to use the slug for edit routes
         $routes = [
-            '/admin/posts/'.$post->getKey().'/edit' => 'Judul',
+            '/admin/posts/'.$post->getRouteKey().'/edit' => 'Judul',
             '/admin/education/'.Education::factory()->create()->getKey().'/edit' => 'Institusi',
             '/admin/experiences/'.Experience::factory()->create()->getKey().'/edit' => 'Jabatan',
             '/admin/projects/'.Project::factory()->create()->getKey().'/edit' => 'Nama Proyek',
@@ -97,6 +114,9 @@ class ResourcePagesTest extends TestCase
 
         foreach ($routes as $route => $label) {
             $response = $this->get($route);
+            if ($response->status() !== 200) {
+                dump($route, $response->status(), $response->getContent());
+            }
             $this->assertSame(200, $response->status(), "GET {$route} failed");
             $response->assertSee($label);
         }

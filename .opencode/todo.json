@@ -1,0 +1,14 @@
+[
+  { "id": 1, "title": "Create Service classes for business logic", "status": "done" },
+  { "id": 2, "title": "Create Form Request classes for validation", "status": "done" },
+  { "id": 3, "title": "Create Repository classes for data access", "status": "done" },
+  { "id": 4, "title": "Create View Composers for shared view data", "status": "done" },
+  { "id": 5, "title": "Refactor Models - add accessors, scopes, consistent casts", "status": "done" },
+  { "id": 6, "title": "Create Base Filament Resource to reduce duplication", "status": "done" },
+  { "id": 7, "title": "Refactor Filament Resources to use base class", "status": "done" },
+  { "id": 8, "title": "Refactor Controllers to use Services and Form Requests", "status": "done" },
+  { "id": 9, "title": "Refactor Livewire Components with better patterns", "status": "done" },
+  { "id": 10, "title": "Extract view logic to components/helpers", "status": "done" },
+  { "id": 11, "title": "Add constants/config for magic values", "status": "done" },
+  { "id": 12, "title": "Run tests and verify changes", "status": "done" }
+]

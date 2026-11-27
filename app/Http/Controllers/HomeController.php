@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Education;
-use App\Models\Experience;
-use App\Models\Post;
-use App\Models\Project;
-use App\Models\Setting;
+use App\Services\EducationService;
+use App\Services\ExperienceService;
+use App\Services\PostService;
+use App\Services\ProjectService;
+use App\Services\SettingService;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $settings = Setting::getInstance();
+    public function __construct(
+        protected ProjectService $projectService,
+        protected ExperienceService $experienceService,
+        protected EducationService $educationService,
+        protected PostService $postService,
+        protected SettingService $settingService
+    ) {}
 
+    public function index(): View
+    {
         return view('welcome', [
-            'settings' => $settings,
-            'projects' => Project::ordered()->get(),
-            'experiences' => Experience::orderBy('sort_order')
-                ->orderByDesc('started_at')
-                ->get(),
-            'educations' => Education::orderBy('sort_order')
-                ->orderByDesc('started_at')
-                ->get(),
-            'latestPosts' => Post::with('author:id,name')
-                ->latest()
-                ->take(3)
-                ->get(),
+            'settings' => $this->settingService->getSettings(),
+            'projects' => $this->projectService->getAllOrdered(),
+            'experiences' => $this->experienceService->getAllOrdered(),
+            'educations' => $this->educationService->getAllOrdered(),
+            'latestPosts' => $this->postService->getLatestPosts(3),
         ]);
     }
 }

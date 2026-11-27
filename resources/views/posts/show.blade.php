@@ -1,12 +1,7 @@
 @extends('layouts.portfolio')
 
 @section('title', $post->title . ' — ' . config('app.name'))
-@section('meta_description', Str::limit(strip_tags($post->content), 150))
-
-@php
-    $bulanIndo = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'];
-    $createdAt = \Illuminate\Support\Carbon::parse($post->created_at);
-@endphp
+@section('meta_description', $post->excerpt(150))
 
 @section('content')
     <div class="mx-auto max-w-5xl px-4 py-10 md:px-6">
@@ -29,7 +24,7 @@
                 <div class="flex flex-wrap items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400">
                     <span class="inline-flex items-center gap-1.5">
                         <x-ui.icon name="calendar" variant="micro" class="size-3.5" />
-                        {{ $createdAt->day . ' ' . $bulanIndo[$createdAt->month] . ' ' . $createdAt->year }}
+                        {{ $post->formatted_created_at }}
                     </span>
                     @if ($post->author)
                         <span class="inline-flex items-center gap-2">
@@ -51,7 +46,7 @@
             </div>
 
             <div class="prose prose-amber prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-amber-700 dark:prose-a:text-amber-400 dark:prose-invert mt-8 max-w-none">
-                {!! $post->content !!}
+                {!! $post->sanitized_content !!}
             </div>
         </article>
     </div>

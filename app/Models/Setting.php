@@ -9,7 +9,7 @@ class Setting extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'blog_name',
@@ -28,6 +28,8 @@ class Setting extends Model
             'blog_name' => 'string',
             'short_description' => 'string',
             'bio_description' => 'string',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 
@@ -41,5 +43,29 @@ class Setting extends Model
             'short_description' => 'Backend Developer & Laravel Artisan',
             'bio_description' => 'Saya membangun aplikasi web yang cepat, rapi, dan mudah dipelihara dengan Laravel — mulai dari REST API, admin panel dengan Filament, hingga antarmuka reaktif berbasis Livewire dan Alpine.js. Tulis sekali, jalan terus.',
         ]);
+    }
+
+    /**
+     * Get the blog name with fallback.
+     */
+    public function getBlogName(): string
+    {
+        return $this->blog_name ?? config('app.name');
+    }
+
+    /**
+     * Get the short description with fallback.
+     */
+    public function getShortDescription(): string
+    {
+        return $this->short_description ?? 'Backend Developer';
+    }
+
+    /**
+     * Get the bio description with fallback.
+     */
+    public function getBioDescription(): string
+    {
+        return $this->bio_description ?? '';
     }
 }

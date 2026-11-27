@@ -2,25 +2,6 @@
 
 @section('title', '{{ $settings->blog_name }} — {{ $settings->short_description }}')
 
-@php
-    /**
-     * Data & format helper (locale Indonesia).
-     */
-    $bulanIndo = [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun', 7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'];
-    $fmt = fn ($date) => $bulanIndo[$date->month] . ' ' . $date->year;
-    $period = fn ($item) => $fmt($item->started_at)
-        . ($item->is_current ? ' — Sekarang' : (! empty($item->ended_at) ? ' — ' . $fmt($item->ended_at) : ''));
-
-    $skills = ['Laravel', 'Livewire', 'Filament', 'Alpine.js', 'Tailwind CSS', 'MySQL', 'Redis', 'Docker'];
-    $socials = [
-        ['href' => 'https://github.com/muhrizki', 'icon' => 'code-bracket-square', 'label' => 'GitHub'],
-        ['href' => 'https://linkedin.com/in/muhrizki', 'icon' => 'link', 'label' => 'LinkedIn'],
-        ['href' => 'mailto:admin@muhrizki.my.id', 'icon' => 'envelope', 'label' => 'Email'],
-    ];
-
-    $projectUrl = fn ($project) => $project->url ?: null;
-@endphp
-
 @section('content')
     {{-- ================================================== HERO ================================================== --}}
     <section id="beranda" class="relative overflow-hidden">
@@ -89,7 +70,7 @@
         <div class="flex flex-wrap items-end justify-between gap-4">
             <div class="space-y-2">
                 <x-ui.badge variant="outline" color="amber" icon="code-bracket" size="sm">Karya</x-ui.badge>
-                <x-ui.heading size="xl">Proyek &amp; Produk yang Pernah Saya Bangun</x-ui.heading>
+                <x-ui.heading size="xl">Proyek & Produk yang Pernah Saya Bangun</x-ui.heading>
             </div>
             <x-ui.link href="https://github.com/muhrizki" target="_blank" open-in-new-tab class="text-sm">
                 Lebih banyak di GitHub
@@ -108,7 +89,7 @@
             <div class="mt-8 grid gap-6 sm:grid-cols-2">
                 @foreach ($projects as $project)
                     <article class="group flex flex-col overflow-hidden rounded-xl border border-black/10 bg-white shadow-xs transition duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-white/10 dark:bg-neutral-900">
-                        @if ($project->image)
+                        @if ($project->hasImage())
                             <img
                                 src="{{ \Illuminate\Support\Facades\Storage::url($project->image) }}"
                                 alt="Tangkapan layar proyek {{ $project->title }}"
@@ -128,7 +109,7 @@
                                 {{ $project->description }}
                             </p>
 
-                            @if (filled($project->tags))
+                            @if ($project->hasTags())
                                 <div class="mt-4 flex flex-wrap gap-1.5">
                                     @foreach ($project->tags as $tag)
                                         <x-ui.badge variant="outline" size="sm" class="text-neutral-500 dark:text-neutral-400">{{ $tag }}</x-ui.badge>
@@ -137,7 +118,7 @@
                             @endif
 
                             <div class="mt-5 border-t border-black/5 pt-4 dark:border-white/5">
-                                @if ($link = $projectUrl($project))
+                                @if ($link = $project->getUrlOrNull())
                                     <x-ui.link href="{{ $link }}" open-in-new-tab icon-after="arrow-top-right-on-square" class="text-sm">
                                         Buka Proyek
                                     </x-ui.link>
@@ -157,7 +138,7 @@
         <div class="mx-auto max-w-5xl px-4 md:px-6">
             <div class="space-y-2">
                 <x-ui.badge variant="outline" color="amber" icon="briefcase" size="sm">Perjalanan</x-ui.badge>
-                <x-ui.heading size="xl">Pengalaman &amp; Pendidikan</x-ui.heading>
+                <x-ui.heading size="xl">Pengalaman & Pendidikan</x-ui.heading>
             </div>
 
             <div class="mt-8 grid gap-12 md:grid-cols-2">
@@ -189,15 +170,15 @@
                                     <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                                         <span class="inline-flex items-center gap-1.5">
                                             <x-ui.icon name="calendar" variant="micro" class="size-3.5" />
-                                            {{ $period($experience) }}
+                                            {{ $experience->period }}
                                         </span>
-                                        @if ($experience->employment_type)
+                                        @if ($experience->hasEmploymentType())
                                             <span>&middot;</span>
                                             <x-ui.badge variant="outline" size="sm">{{ $experience->employment_type }}</x-ui.badge>
                                         @endif
                                     </div>
 
-                                    @if ($experience->description)
+                                    @if ($experience->hasDescription())
                                         <p class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                                             {{ $experience->description }}
                                         </p>
@@ -236,15 +217,15 @@
                                     <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                                         <span class="inline-flex items-center gap-1.5">
                                             <x-ui.icon name="calendar" variant="micro" class="size-3.5" />
-                                            {{ $period($education) }}
+                                            {{ $education->period }}
                                         </span>
-                                        @filled($education->field_of_study)
+                                        @if ($education->hasFieldOfStudy())
                                             <span>&middot;</span>
                                             <x-ui.badge variant="outline" size="sm">{{ $education->field_of_study }}</x-ui.badge>
-                                        @endfilled
+                                        @endif
                                     </div>
 
-                                    @if ($education->description)
+                                    @if ($education->hasDescription())
                                         <p class="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                                             {{ $education->description }}
                                         </p>
@@ -284,7 +265,7 @@
                     <article class="group flex flex-col rounded-xl border border-black/10 bg-white p-5 shadow-xs transition duration-200 hover:-translate-y-0.5 hover:shadow-lg dark:border-white/10 dark:bg-neutral-900">
                         <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                             <x-ui.icon name="calendar" variant="micro" class="size-3.5" />
-                            {{ $fmt($post->created_at) }}
+                            {{ $post->formatted_created_at }}
                             @if ($post->author)
                                 <span>&middot;</span>
                                 <span>{{ $post->author->name }}</span>
@@ -298,7 +279,7 @@
                         </x-ui.heading>
 
                         <p class="mt-2 line-clamp-2 text-sm font-normal text-neutral-500 dark:text-neutral-400">
-                            {{ Str::limit(strip_tags($post->content), 110) }}
+                            {{ $post->excerpt }}
                         </p>
 
                         <div class="mt-auto pt-4">

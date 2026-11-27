@@ -3,6 +3,7 @@
 namespace Tests\Feature\Console;
 
 use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -32,6 +33,8 @@ class FilamentUserCommandTest extends TestCase
         );
 
         // The generated user is a valid Filament user: `canAccessPanel` returns true.
-        $this->assertTrue($user->canAccessPanel(app('filament.panel')));
+        $panel = Filament::getPanel('admin');
+        $this->assertNotNull($panel);
+        $this->assertTrue($user->canAccessPanel($panel));
     }
 }

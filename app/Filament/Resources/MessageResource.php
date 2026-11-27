@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\Concerns\BaseResource;
 use App\Filament\Resources\MessageResource\Pages;
 use App\Models\Message;
-use BackedEnum;
 use Filament\Actions;
-use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -15,27 +16,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageResource extends Resource
 {
+    use BaseResource;
+
     protected static ?string $model = Message::class;
 
     protected static ?string $modelLabel = 'Message';
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
+    protected static ?string $pluralModelLabel = 'Messages';
+
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
+
+    protected static \UnitEnum|string|null $navigationGroup = 'Konten';
 
     public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('sender_email')
+                TextInput::make('sender_email')
+                    ->label('Email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('sender_name')
+                TextInput::make('sender_name')
+                    ->label('Nama')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('subject')
+                TextInput::make('subject')
+                    ->label('Subjek')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('content')
+                Textarea::make('content')
+                    ->label('Pesan')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -46,16 +57,21 @@ class MessageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('sender_email')
+                    ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sender_name')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
+                    ->label('Subjek')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -67,6 +83,11 @@ class MessageResource extends Resource
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -86,11 +107,6 @@ class MessageResource extends Resource
     {
         return false;
     }
-
-    // public static function canDelete(Model $record): bool
-    // {
-    //     return false;
-    // }
 
     public static function getPages(): array
     {

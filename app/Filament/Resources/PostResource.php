@@ -2,63 +2,79 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\Concerns\BaseResource;
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
-use BackedEnum;
 use Filament\Actions;
-use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class PostResource extends Resource
 {
+    use BaseResource;
+
     protected static ?string $model = Post::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-newspaper';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-newspaper';
 
-    public static function form(Schemas\Schema $form): Schemas\Schema
+    protected static \UnitEnum|string|null $navigationGroup = 'Konten';
+
+    public static function form(Schema $form): Schema
     {
         return $form
-            ->columns(1)
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()->label('Judul')
+                TextInput::make('title')
+                    ->label('Judul')
+                    ->required()
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('headline_image')
-                    ->required()->label('Gambar Headline')
-                    ->image()->imageEditor(),
-                Forms\Components\RichEditor::make('content')
+                FileUpload::make('headline_image')
+                    ->label('Gambar Headline')
+                    ->image()
+                    ->imageEditor()
+                    ->directory('posts')
+                    ->required(),
+                RichEditor::make('content')
+                    ->label('Konten')
                     ->required()
                     ->columnSpanFull(),
-            ]);
+            ])
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('author_id', auth()->id()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
+                    ->label('Judul')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('author.name')
+                    ->label('Penulis')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('headline_image')
                     ->label('Gambar Headline'),
-                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->modifyQueryUsing(function (Builder $query) {
-                return $query->where('author_id', auth()->id());
-            })
             ->filters([
                 //
             ])

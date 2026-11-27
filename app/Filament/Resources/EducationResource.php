@@ -2,52 +2,56 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\Concerns\BaseResource;
 use App\Filament\Resources\EducationResource\Pages;
 use App\Models\Education;
-use BackedEnum;
 use Filament\Actions;
-use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class EducationResource extends Resource
 {
+    use BaseResource;
+
     protected static ?string $model = Education::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Portofolio';
+    protected static \UnitEnum|string|null $navigationGroup = 'Portofolio';
 
     public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('institution')
+                TextInput::make('institution')
                     ->label('Institusi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('degree')
+                TextInput::make('degree')
                     ->label('Gelar / Jurusan')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('field_of_study')
+                TextInput::make('field_of_study')
                     ->label('Bidang Studi')
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('description')
+                RichEditor::make('description')
                     ->label('Deskripsi')
                     ->columnSpanFull(),
-                Forms\Components\DatePicker::make('started_at')
+                DatePicker::make('started_at')
                     ->label('Mulai')
                     ->required(),
-                Forms\Components\DatePicker::make('ended_at')
+                DatePicker::make('ended_at')
                     ->label('Selesai')
                     ->hidden(fn (Get $get) => (bool) $get('is_current')),
-                Forms\Components\Toggle::make('is_current')
+                Toggle::make('is_current')
                     ->label('Sedang Bersekolah di Sini')
                     ->live()
                     ->afterStateUpdated(function (Set $set, $state) {
@@ -55,7 +59,7 @@ class EducationResource extends Resource
                             $set('ended_at', null);
                         }
                     }),
-                Forms\Components\TextInput::make('sort_order')
+                TextInput::make('sort_order')
                     ->label('Urutan')
                     ->numeric()
                     ->default(0),
@@ -68,24 +72,31 @@ class EducationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('institution')
+                    ->label('Institusi')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('degree')
+                    ->label('Gelar / Jurusan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('field_of_study')
+                    ->label('Bidang Studi')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('started_at')
+                    ->label('Mulai')
                     ->date('Y')
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('ended_at')
+                    ->label('Selesai')
                     ->date('Y')
                     ->placeholder('Sekarang')
                     ->toggleable(),
                 Tables\Columns\IconColumn::make('is_current')
+                    ->label('Saat Ini')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Urutan')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

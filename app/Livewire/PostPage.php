@@ -2,39 +2,59 @@
 
 namespace App\Livewire;
 
-use App\Models\Post;
+use App\Services\PostService;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithPagination;
 
+#[Layout('layouts.portfolio')]
+#[Title('Artikel Saya')]
 class PostPage extends Component
 {
-    public $search = '';
+    use WithPagination;
 
-    public $category = '';
+    public string $search = '';
 
-    protected $queryString = [
+    public string $category = '';
+
+    protected array $queryString = [
         'search' => ['except' => ''],
         'category' => ['except' => ''],
     ];
 
-    public function mount()
+    protected PostService $postService;
+
+    public function boot(): void
+    {
+        $this->postService = app(PostService::class);
+    }
+
+    public function mount(): void
     {
         $this->queryString['search'] = ['except' => ''];
         $this->queryString['category'] = ['except' => ''];
     }
 
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedCategory(): void
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $query = Post::where('author_id', auth()->id());
+        $posts = $this->postService->getPostsForUser(
+            auth()->user(),
+            10,
+            $this->search,
+            $this->category
+        );
 
-        if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('title', 'like', '%'.$this->search.'%')
-                    ->orWhere('content', 'like', '%'.$this->search.'%');
-            });
-        }
-
-        $post = $query->latest()->paginate(10);
-
-        return view('livewire.post', ['post' => $post]);
+        return view('livewire.post', ['posts' => $posts]);
     }
 }
