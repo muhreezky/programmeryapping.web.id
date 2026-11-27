@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Setting;
 use Livewire\Component;
 
 class Navbar extends Component
@@ -15,6 +16,8 @@ class Navbar extends Component
 
     public function render()
     {
-        return view('livewire.navbar');
+        return view('livewire.navbar', [
+            'settings' => Setting::getInstance(),
+        ]);
     }
 }

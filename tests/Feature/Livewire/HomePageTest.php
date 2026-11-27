@@ -3,8 +3,6 @@
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\ContactForm;
-use App\Livewire\Navbar;
-use App\Livewire\PostPage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;

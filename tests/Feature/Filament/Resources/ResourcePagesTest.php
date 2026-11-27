@@ -89,10 +89,10 @@ class ResourcePagesTest extends TestCase
         ]);
 
         $routes = [
-            '/admin/posts/' . $post->getKey() . '/edit' => 'Judul',
-            '/admin/education/' . Education::factory()->create()->getKey() . '/edit' => 'Institusi',
-            '/admin/experiences/' . Experience::factory()->create()->getKey() . '/edit' => 'Jabatan',
-            '/admin/projects/' . Project::factory()->create()->getKey() . '/edit' => 'Nama Proyek',
+            '/admin/posts/'.$post->getKey().'/edit' => 'Judul',
+            '/admin/education/'.Education::factory()->create()->getKey().'/edit' => 'Institusi',
+            '/admin/experiences/'.Experience::factory()->create()->getKey().'/edit' => 'Jabatan',
+            '/admin/projects/'.Project::factory()->create()->getKey().'/edit' => 'Nama Proyek',
         ];
 
         foreach ($routes as $route => $label) {
@@ -111,7 +111,7 @@ class ResourcePagesTest extends TestCase
             'content' => 'C',
         ]);
 
-        $this->get('/admin/messages/' . $message->getKey())->assertStatus(200);
+        $this->get('/admin/messages/'.$message->getKey())->assertStatus(200);
     }
 
     public function test_message_creation_is_denied(): void

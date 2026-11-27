@@ -8,10 +8,15 @@ use Livewire\Component;
 class ContactForm extends Component
 {
     public $name = '';
+
     public $email = '';
+
     public $subject = '';
+
     public $message = '';
+
     public $success = false;
+
     public $error = '';
 
     protected $rules = [
@@ -36,7 +41,7 @@ class ContactForm extends Component
             $this->success = true;
             $this->reset(['name', 'email', 'subject', 'message']);
         } catch (\Exception $e) {
-            $this->error = 'Gagal mengirim pesan: ' . $e->getMessage();
+            $this->error = 'Gagal mengirim pesan: '.$e->getMessage();
         }
     }
 

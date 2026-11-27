@@ -4,20 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MessageResource\Pages;
 use App\Models\Message;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use BackedEnum;
 
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
+
     protected static ?string $modelLabel = 'Message';
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
