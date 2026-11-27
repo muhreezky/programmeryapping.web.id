@@ -3,9 +3,9 @@
     <div class="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 md:px-6">
 
         <a href="{{ route('home') }}" class="flex items-center gap-2.5" wire:navigate>
-            <x-ui.avatar initials="MR" color="amber" size="lg" alt="Logo {{ config('app.name') }}" />
+            <x-ui.avatar initials="MR" color="amber" size="lg" alt="Logo {{ $settings->blog_name }}" />
             <span class="text-lg font-bold tracking-tight text-neutral-900 dark:text-white">
-                {{ config('app.name') }}
+                {{ $settings->blog_name }}
             </span>
         </a>
 

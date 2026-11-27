@@ -4,16 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EducationResource\Pages;
 use App\Models\Education;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
-use Filament\Actions;
-use Filament\Schemas\Schema;
-use BackedEnum;
 use UnitEnum;
 
 class EducationResource extends Resource
@@ -47,7 +46,7 @@ class EducationResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('ended_at')
                     ->label('Selesai')
-                    ->hidden(fn(Get $get) => (bool) $get('is_current')),
+                    ->hidden(fn (Get $get) => (bool) $get('is_current')),
                 Forms\Components\Toggle::make('is_current')
                     ->label('Sedang Bersekolah di Sini')
                     ->live()

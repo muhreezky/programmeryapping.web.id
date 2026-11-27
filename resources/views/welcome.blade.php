@@ -1,6 +1,6 @@
 @extends('layouts.portfolio')
 
-@section('title', 'Muhammad Rizkiansyah — Backend Developer & Laravel Artisan')
+@section('title', '{{ $settings->blog_name }} — {{ $settings->short_description }}')
 
 @php
     /**
@@ -34,15 +34,12 @@
                         Muhammad <span class="text-amber-600 dark:text-amber-400">Rizkiansyah</span>
                     </x-ui.heading>
                     <p class="mt-3 text-lg font-medium text-amber-700 dark:text-amber-400">
-                        Backend Developer — Laravel & TALL Stack
+                        {{ $settings->short_description }}
                     </p>
                 </div>
 
                 <p class="text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
-                    Saya membangun aplikasi web yang cepat, rapi, dan mudah dipelihara dengan
-                    <strong class="font-semibold text-neutral-800 dark:text-neutral-200">Laravel</strong> —
-                    mulai dari REST API, admin panel dengan Filament, hingga antarmuka reaktif
-                    berbasis Livewire dan Alpine.js. Tulis sekali, jalan terus.
+                    {!! $settings->bio_description !!}
                 </p>
 
                 <div class="flex flex-wrap items-center gap-3 pt-1">

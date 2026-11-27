@@ -8,6 +8,7 @@ use Livewire\Component;
 class PostPage extends Component
 {
     public $search = '';
+
     public $category = '';
 
     protected $queryString = [
@@ -27,8 +28,8 @@ class PostPage extends Component
 
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('content', 'like', '%' . $this->search . '%');
+                $q->where('title', 'like', '%'.$this->search.'%')
+                    ->orWhere('content', 'like', '%'.$this->search.'%');
             });
         }
 

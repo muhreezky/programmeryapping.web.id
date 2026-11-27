@@ -4,15 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Schemas;
 use Filament\Resources\Resource;
+use Filament\Schemas;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Actions;
-use BackedEnum;
 
 class PostResource extends Resource
 {

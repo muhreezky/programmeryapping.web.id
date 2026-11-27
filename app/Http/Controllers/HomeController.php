@@ -6,12 +6,16 @@ use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Setting;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        $settings = Setting::getInstance();
+
         return view('welcome', [
+            'settings' => $settings,
             'projects' => Project::ordered()->get(),
             'experiences' => Experience::orderBy('sort_order')
                 ->orderByDesc('started_at')

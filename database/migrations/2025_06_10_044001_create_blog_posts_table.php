@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('blog_posts')) {
+        if (! Schema::hasTable('blog_posts')) {
             Schema::create('blog_posts', function (Blueprint $table) {
                 $table->id();
                 $table->string('title');
@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->string('headline_image');
                 $table->foreignIdFor(User::class, 'author_id')->index();
                 $table->timestamps();
-                
+
             });
         }
     }
